@@ -61,6 +61,26 @@ tr:last-child td { border-bottom: 0; }
 button { font: 600 14px var(--sans); background: var(--accent); color: var(--paper); border: 0; padding: 9px 14px; border-radius: 4px; cursor: pointer; }
 button:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .empty { padding: 24px; color: var(--muted); }
+/* Pretend portfolio */
+.viz { --s1: #2a78d6; --s2: #eb6834; }
+@media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz { --s1: #3987e5; --s2: #d95926; } }
+:root[data-theme="dark"] .viz { --s1: #3987e5; --s2: #d95926; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.stat { background: var(--paper); padding: 16px 18px; }
+.stat span { display: block; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.stat b { display: block; font-family: var(--serif); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.stat small { color: var(--muted); font-size: 14px; }
+.up { color: var(--accent); } .dn { color: var(--down); }
+.chart { position: relative; background: var(--paper); border: 1px solid var(--line); padding: 14px 16px 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.legend i { display: inline-block; width: 16px; height: 0; border-top: 2px solid; vertical-align: 4px; margin-right: 6px; }
+.chart svg { display: block; overflow: visible; }
+.chart text { font: 12px var(--sans); fill: var(--muted); }
+.chart .lbl { font-weight: 600; fill: var(--ink); }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); font-size: 13px; padding: 8px 10px; border-radius: 4px; display: none; white-space: nowrap; }
+.tip b { font-variant-numeric: tabular-nums; }
+.tip i { display: inline-block; width: 12px; border-top: 2px solid; vertical-align: 4px; margin-right: 6px; }
+details summary { cursor: pointer; color: var(--accent); font-weight: 500; margin-top: 10px; }
 footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
 footer a { color: inherit; }
 </style>
@@ -75,6 +95,7 @@ footer a { color: inherit; }
     </div>
     <label>Day <select id="day" aria-label="Choose a day"></select></label>
   </header>
+  <section id="pf" class="viz" hidden></section>
   <main id="out" class="wrap" style="gap:40px"><p class="meta">Loading today's picks…</p></main>
   <footer>
     A shortlist to research, not financial advice. Data: SEC filings and Yahoo Finance; prices are the last market close.
@@ -121,6 +142,110 @@ async function show(date) {
       Object.entries(d.screens).map(([n, picks], i) => screenHTML(n, picks, (d.info || {})[n], i)).join("");
   } catch { out.innerHTML = `<p class="meta">Couldn't load picks for ${esc(date)}.</p>`; }
 }
+
+const usd = (x) => "$" + x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pct = (a, b) => (b ? (a / b - 1) * 100 : 0);
+const signed = (x, f) => (x >= 0 ? "+" : "−") + f(Math.abs(x));
+const short = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+let CW = 900; // chart width in px, set from the box so text never stretches
+function chartSVG(hist) {
+  // One y-axis: dollars gained or lost so far (worth minus money put in), with a zero line.
+  const W = CW, H = 260, L = 64, R = 96, T = 10, B = 26;
+  const series = [
+    { key: "g", name: "w3bb picks", color: "var(--s1)" },
+    { key: "bg", name: "S&P 500", color: "var(--s2)" },
+  ];
+  const all = hist.flatMap((h) => series.map((s) => h[s.key])).concat(0);
+  let lo = Math.min(...all), hi = Math.max(...all);
+  const pad = (hi - lo) * 0.1 || 1; lo -= pad; hi += pad;
+  const x = (i) => L + (i / (hist.length - 1)) * (W - L - R);
+  const y = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
+  const ticks = [0, 1, 2, 3].map((k) => lo + (k / 3) * (hi - lo));
+  const xt = [...new Set([0, Math.floor((hist.length - 1) / 2), hist.length - 1])];
+  // Direct labels at the line ends, nudged apart so they never overlap.
+  const ends = series.map((s) => ({ s, y: y(hist[hist.length - 1][s.key]) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 15) ends[i].y = ends[i - 1].y + 15;
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Portfolio value over time">
+    ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${signed(v, (a) => "$" + a.toFixed(Math.abs(hi - lo) < 20 ? 2 : 0))}</text>`).join("")}
+    <line x1="${L}" x2="${W - R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--muted)" stroke-width="1"/>
+    ${ends.some((e) => Math.abs(e.y - y(0)) < 15) ? "" : `<text x="${W - R + 8}" y="${y(0) + 4}">break even</text>`}
+    ${xt.map((i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${short(hist[i].date)}</text>`).join("")}
+    ${series.map((s) => `<polyline fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" 
+      points="${hist.map((h, i) => `${x(i)},${y(h[s.key])}`).join(" ")}" vector-effect="non-scaling-stroke"/>`).join("")}
+    ${ends.map((e) => `<text class="lbl" x="${W - R + 8}" y="${e.y + 4}">${e.s.name}</text>`).join("")}
+    <line id="xh" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-width="1" visibility="hidden"/>
+    <rect id="hit" x="${L}" y="0" width="${W - L - R}" height="${H}" fill="transparent"/>
+  </svg>`;
+}
+
+function wireChart(box, hist) {
+  const svg = box.querySelector("svg"), tip = box.querySelector(".tip"), xh = svg.querySelector("#xh");
+  const rows = [["g", "w3bb picks", "var(--s1)"], ["bg", "S&P 500", "var(--s2)"]];
+  svg.querySelector("#hit").addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), W = CW, L = 64, R = 96;
+    const vx = ((e.clientX - r.left) / r.width) * W;
+    const i = Math.max(0, Math.min(hist.length - 1, Math.round(((vx - L) / (W - L - R)) * (hist.length - 1))));
+    const px = L + (i / (hist.length - 1)) * (W - L - R);
+    xh.setAttribute("x1", px); xh.setAttribute("x2", px); xh.setAttribute("visibility", "visible");
+    tip.replaceChildren();
+    const head = document.createElement("div"); head.textContent = `${nice(hist[i].date)} · ${usd(hist[i].invested)} put in`; tip.append(head);
+    for (const [k, name, c] of rows) {
+      const d = document.createElement("div"), key = document.createElement("i"), v = document.createElement("b");
+      key.style.borderColor = c; v.textContent = signed(hist[i][k], usd);
+      d.append(key, v, document.createTextNode(" " + name)); tip.append(d);
+    }
+    tip.style.display = "block";
+    const left = (px / W) * r.width + 16;
+    tip.style.left = Math.min(left, box.clientWidth - tip.offsetWidth - 8) + "px"; tip.style.top = "40px";
+  });
+  svg.querySelector("#hit").addEventListener("pointerleave", () => { tip.style.display = "none"; xh.setAttribute("visibility", "hidden"); });
+}
+
+async function showPortfolio() {
+  let pf; try { pf = await getJSON("results/portfolio.json"); } catch { return; }
+  const h = pf.history[pf.history.length - 1]; if (!h) return;
+  const gain = h.value - h.invested, bgain = h.bench_value - h.invested;
+  const days = new Set(pf.buys.map((b) => b.date)).size;
+  const el = $("#pf");
+  el.innerHTML = `<h2>Pretend portfolio <span class="count">$${pf.dollars_per_pick} per pick, every day</span></h2>
+    <p class="meta">What if you put $${pf.dollars_per_pick} into every pick each trading day since ${nice(pf.start)}? ${days} buying day${days === 1 ? "" : "s"} so far. The same money in an S&amp;P 500 index fund is the yardstick: Buffett says most people should just buy that.</p>
+    <div class="stats">
+      <div class="stat"><span>Money put in</span><b>${usd(h.invested)}</b><small>${pf.buys.length} buys</small></div>
+      <div class="stat"><span>Worth now</span><b>${usd(h.value)}</b><small>as of ${short(h.date)} close</small></div>
+      <div class="stat"><span>Gain or loss</span><b class="${gain >= 0 ? "up" : "dn"}">${signed(gain, usd)}</b><small>${signed(pct(h.value, h.invested), (v) => v.toFixed(1) + "%")}</small></div>
+      <div class="stat"><span>S&amp;P 500 instead</span><b>${usd(h.bench_value)}</b><small class="${gain >= bgain ? "up" : "dn"}">w3bb is ${gain >= bgain ? "ahead by" : "behind by"} ${usd(Math.abs(gain - bgain))}</small></div>
+    </div>
+    <div class="chart" style="margin-top:14px">
+      ${pf.history.length > 1
+        ? `<div class="legend"><b style="color:var(--ink);margin-right:6px">Gain or loss so far</b><span><i style="border-color:var(--s1)"></i>w3bb picks</span><span><i style="border-color:var(--s2)"></i>S&amp;P 500</span></div><svg></svg><div class="tip"></div>`
+        : `<p class="meta" style="margin:6px 0">The chart starts after the second trading day.</p>`}
+      <details><summary>Every stock we own (${pf.holdings.length})</summary>
+        <div class="table" style="margin:10px 0 8px"><table>
+          <thead><tr><th>#</th><th>Company</th><th>Times bought</th><th>Put in</th><th>Worth now</th><th>Gain</th><th>Price</th></tr></thead>
+          <tbody>${pf.holdings.map((s, n) => `<tr><td>${n + 1}</td><td class="name"><b>${esc(s.ticker)}</b>${esc(s.name)}<small>first bought ${short(s.first_bought)}</small></td>
+            <td>${s.buys}</td><td>${usd(s.invested)}</td><td>${usd(s.value)}</td>
+            <td class="${s.gain_pct >= 0 ? "up" : "dn"}">${signed(s.gain_pct, (v) => v.toFixed(1) + "%")}</td><td>$${s.price.toFixed(2)}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </details>
+      <details><summary>Value by day</summary>
+        <div class="table" style="margin:10px 0 8px"><table>
+          <thead><tr><th>Day</th><th>Put in</th><th>w3bb picks</th><th>S&amp;P 500</th></tr></thead>
+          <tbody>${[...pf.history].reverse().map((d) => `<tr><td>${short(d.date)}</td><td>${usd(d.invested)}</td><td>${usd(d.value)}</td><td>${usd(d.bench_value)}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </details>
+    </div>
+    <p class="meta" style="margin-top:8px">Pretend money only. Bought at each day's closing price; stock splits counted, dividends not.</p>`;
+  el.hidden = false;
+  if (pf.history.length > 1) {
+    pf.history.forEach((d) => { d.g = d.value - d.invested; d.bg = d.bench_value - d.invested; });
+    const box = el.querySelector(".chart");
+    const draw = () => { CW = Math.max(300, box.clientWidth - 32); box.querySelector("svg").outerHTML = chartSVG(pf.history); wireChart(box, pf.history); };
+    draw(); let t; addEventListener("resize", () => { clearTimeout(t); t = setTimeout(draw, 150); });
+  }
+}
+showPortfolio();
 
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button[data-copy]"); if (!b) return;

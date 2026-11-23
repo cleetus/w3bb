@@ -17,6 +17,16 @@ Solid, cheap, cash-rich companies that bad news knocked down:
 
 The rules live in `screens.json`, and the prompts for digging into the picks live in `prompts/`.
 
+## Pretend portfolio
+
+What if you put $10 into every pick on every trading day, starting 2026-11-23? `portfolio.py` keeps score in `results/portfolio.json`:
+
+- Each pick is bought at that day's closing price, once per trading day (holidays and re-runs don't buy twice).
+- The same dollars go into the S&P 500 (SPY) as the yardstick.
+- Stock splits are counted; dividends aren't, for either side.
+
+The site shows money put in, what it's worth now, gain or loss over time vs the S&P 500, and every stock owned.
+
 ## How it works
 
 `w3bb.py` uses only free data:

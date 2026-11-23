@@ -112,6 +112,9 @@ def tickers_for(session, ciks):
     return out
 
 
+MARKET_DATE = None
+
+
 def price_drops(tickers, min_drop):
     """{ticker: (price_now, price_52w_ago, drop_pct)} for stocks down at least min_drop %."""
     out = {}
@@ -122,6 +125,8 @@ def price_drops(tickers, min_drop):
                          progress=False, threads=True, group_by="column")["Close"]
         if isinstance(df, pd.Series):
             df = df.to_frame(batch[0])
+        global MARKET_DATE  # the trading day these prices are from (the pretend buys use it)
+        MARKET_DATE = max(MARKET_DATE or df.index[-1], df.index[-1])
         cutoff = df.index[-1] - pd.Timedelta(days=365)
         for t in df.columns:
             s = df[t].dropna()
@@ -268,6 +273,12 @@ def main():
     results = {n: run_screen(n, screens[n], today) for n in names}
     write_report(today, results)
     log(f"wrote {RESULTS / f'{today}.md'}")
+    import portfolio
+    pf = portfolio.update(results, MARKET_DATE.date() if MARKET_DATE is not None else None,
+                          RESULTS / "portfolio.json", log)
+    h = pf["history"][-1] if pf["history"] else None
+    if h:
+        log(f"portfolio: ${h['invested']:,.2f} in, worth ${h['value']:,.2f} (S&P 500 would be ${h['bench_value']:,.2f})")
 
 
 if __name__ == "__main__":
