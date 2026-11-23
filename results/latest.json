@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-23",
+  "screens": {
+    "beaten-down-bargains": [
+      {
+        "ticker": "AMSF",
+        "name": "AMERISAFE, Inc.",
+        "sector": "Financial Services",
+        "industry": "Insurance - Specialty",
+        "price": 18.79,
+        "price_52w_ago": 37.6,
+        "drop_pct": 50.0,
+        "pe": 8.7,
+        "market_cap": 348235456,
+        "cash": 98365000.0,
+        "debt": 0.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "FINV",
+        "name": "FinVolution Group",
+        "sector": "Financial Services",
+        "industry": "Credit Services",
+        "price": 2.5,
+        "price_52w_ago": 4.46,
+        "drop_pct": 43.9,
+        "pe": 2.4,
+        "market_cap": 590235008,
+        "cash": 963619836.4797974,
+        "debt": 236277343.6378479,
+        "profitable_years": 9,
+        "years_checked": 10
+      },
+      {
+        "ticker": "BABA",
+        "name": "Alibaba Group Holding Limited",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "price": 86.04,
+        "price_52w_ago": 151.54,
+        "drop_pct": 43.2,
+        "pe": 12.8,
+        "market_cap": 214045589504,
+        "cash": 64113720990.36133,
+        "debt": 40098592295.99121,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "WB",
+        "name": "Weibo Corporation",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information",
+        "price": 5.26,
+        "price_52w_ago": 9.01,
+        "drop_pct": 41.6,
+        "pe": 11.0,
+        "market_cap": 1292237824,
+        "cash": 2308965120.0,
+        "debt": 1869380992.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "MOMO",
+        "name": "Hello Group Inc.",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information",
+        "price": 4.16,
+        "price_52w_ago": 6.66,
+        "drop_pct": 37.6,
+        "pe": 4.3,
+        "market_cap": 597524416,
+        "cash": 1274360149.7143555,
+        "debt": 10228548.292219639,
+        "profitable_years": 9,
+        "years_checked": 10
+      },
+      {
+        "ticker": "LOPE",
+        "name": "Grand Canyon Education, Inc.",
+        "sector": "Consumer Defensive",
+        "industry": "Education & Training Services",
+        "price": 110.19,
+        "price_52w_ago": 160.19,
+        "drop_pct": 31.2,
+        "pe": 11.8,
+        "market_cap": 2811003904,
+        "cash": 162142000.0,
+        "debt": 114011000.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "VIPS",
+        "name": "Vipshop Holdings Limited",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "price": 12.61,
+        "price_52w_ago": 17.9,
+        "drop_pct": 29.5,
+        "pe": 4.2,
+        "market_cap": 5996055040,
+        "cash": 4931857103.287964,
+        "debt": 1736076153.9389038,
+        "profitable_years": 10,
+        "years_checked": 10
+      }
+    ]
+  },
+  "info": {
+    "beaten-down-bargains": {
+      "title": "Beaten-down bargains",
+      "why": "Solid, cheap, cash-rich companies that bad news knocked down 25%+ in a year.",
+      "rules": [
+        "P/E between 0 and 15 (real profits, cheap price)",
+        "At least 10 years of SEC filings",
+        "Profitable in at least 8 of the last 10 years, including 2020",
+        "More cash than debt",
+        "Price down at least 25% from 52 weeks ago",
+        "Company worth at least $300.0M"
+      ],
+      "find_prompt": "Act like Warren Buffett looking for bargains. Find 5 US stocks that:\n1. Have a P/E ratio under 15 and real, steady profits\n2. Have been in business at least 10 years and stayed profitable through hard times like 2008 and 2020\n3. Have more cash than debt\n4. Have dropped at least 25% in the past 52 weeks\n\nFor each one, tell me: why the price dropped (the bad news), whether that problem looks temporary or permanent, what the company does that's hard for competitors to copy (its \"moat\"), and the biggest risk of buying it. Use current data and tell me the date of your numbers. Then tell me which one Buffett would most likely buy and why, in plain words a teenager would understand.",
+      "picks_prompt": "Act like Warren Buffett. These stocks passed my screen today (low P/E, 10 years of mostly steady profits, plenty of cash, down 25%+ in a year): {TICKERS}. For each one, look up current news and tell me: why the price dropped, whether that problem looks temporary or permanent, the company's moat, and the biggest risk. Then tell me which one Buffett would most likely buy and why, in plain words a teenager would understand. Tell me the date of your numbers."
+    }
+  }
+}

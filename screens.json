@@ -1,0 +1,16 @@
+{
+  "beaten-down-bargains": {
+    "title": "Beaten-down bargains",
+    "why": "Solid, cheap, cash-rich companies that bad news knocked down 25%+ in a year.",
+    "years_of_history": 10,
+    "min_profitable_years": 8,
+    "must_be_profitable_in": [2020],
+    "max_pe": 15,
+    "min_drop_52w_pct": 25,
+    "min_market_cap": 300000000,
+    "cash_rule": "cash > debt (set min_cash_pct_of_cap to e.g. 10 to also allow cash >= 10% of market cap)",
+    "min_cash_pct_of_cap": null,
+    "sort": "biggest drop first",
+    "prompt": "prompts/beaten-down-bargains.md"
+  }
+}

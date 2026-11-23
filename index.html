@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>w3bb — What Would Warren Buffett Buy?</title>
+<meta name="description" content="A daily Buffett-style stock screen over every US stock: cheap, steady, cash-rich companies that bad news knocked down.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Look: an annual-letter / ledger page — serif headings, ruled tables, a green-ink accent. */
+:root {
+  --bg: #f6f3ec; --paper: #fffdf8; --ink: #1d1b16; --muted: #6b665b; --line: #ddd6c6;
+  --accent: #1f5c3f; --down: #a33a2b; --chip: #ece6d8;
+  --serif: "Libre Caslon Text", Georgia, serif;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15140f; --paper: #1e1c16; --ink: #ece7db; --muted: #a39d8f; --line: #36322a;
+    --accent: #6cc196; --down: #ef8a78; --chip: #2a271f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15140f; --paper: #1e1c16; --ink: #ece7db; --muted: #a39d8f; --line: #36322a;
+  --accent: #6cc196; --down: #ef8a78; --chip: #2a271f; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); padding: 32px 16px 64px; }
+.wrap { max-width: 1000px; margin: 0 auto; display: grid; gap: 32px; }
+header { border-bottom: 3px double var(--ink); padding-bottom: 18px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
+.brand { font-family: var(--mono); font-size: 14px; letter-spacing: .2em; color: var(--accent); text-transform: uppercase; margin: 0 0 6px; }
+h1 { font-family: var(--serif); font-size: clamp(30px, 6vw, 48px); line-height: 1.05; margin: 0; font-weight: 700; }
+.sub { margin: 8px 0 0; color: var(--muted); max-width: 60ch; }
+select { font: 500 15px var(--sans); background: var(--paper); color: var(--ink); border: 1px solid var(--line); padding: 8px 10px; border-radius: 4px; }
+label { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+h2 { font-family: var(--serif); font-size: 26px; margin: 0; }
+.meta { color: var(--muted); margin: 4px 0 16px; }
+.count { font-family: var(--mono); font-size: 14px; background: var(--chip); padding: 2px 8px; border-radius: 3px; margin-left: 8px; vertical-align: 4px; }
+.table { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-variant-numeric: tabular-nums; }
+th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font: 600 12px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+th:nth-child(-n+2), td:nth-child(-n+2) { text-align: left; }
+td.name { white-space: normal; min-width: 200px; }
+td.name b { font-family: var(--mono); font-weight: 500; margin-right: 6px; }
+td.name a { color: var(--accent); text-decoration: none; }
+td.name a:hover { text-decoration: underline; }
+td.name small { display: block; color: var(--muted); }
+.down { color: var(--down); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 20px; }
+.box { background: var(--paper); border: 1px solid var(--line); padding: 18px 20px; }
+.box h3 { font-family: var(--serif); font-size: 19px; margin: 0 0 10px; }
+.box ol { margin: 0; padding-left: 20px; }
+.box li { margin: 3px 0; }
+.prompt { white-space: pre-wrap; font: 14px/1.55 var(--mono); background: var(--chip); padding: 14px; margin: 0 0 12px; border-radius: 4px; }
+button { font: 600 14px var(--sans); background: var(--accent); color: var(--paper); border: 0; padding: 9px 14px; border-radius: 4px; cursor: pointer; }
+button:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.empty { padding: 24px; color: var(--muted); }
+footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+footer a { color: inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="brand">w3bb · dub-3-b-b</p>
+      <h1>What Would Warren Buffett Buy?</h1>
+      <p class="sub">A daily screen over every US stock for cheap, steady, cash-rich companies that bad news knocked down. Updated each weekday morning.</p>
+    </div>
+    <label>Day <select id="day" aria-label="Choose a day"></select></label>
+  </header>
+  <main id="out" class="wrap" style="gap:40px"><p class="meta">Loading today's picks…</p></main>
+  <footer>
+    A shortlist to research, not financial advice. Data: SEC filings and Yahoo Finance; prices are the last market close.
+    <a href="https://github.com/cleetus/w3bb">Code on GitHub</a>.
+  </footer>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const money = (x) => { for (const [u, n] of [["T", 1e12], ["B", 1e9], ["M", 1e6]]) if (Math.abs(x) >= n) return "$" + (x / n).toFixed(1) + u; return "$" + Math.round(x).toLocaleString(); };
+const nice = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+
+async function getJSON(path) { const r = await fetch(path, { cache: "no-cache" }); if (!r.ok) throw new Error(path); return r.json(); }
+
+function screenHTML(name, picks, info, i) {
+  const rows = picks.map((p, n) => `<tr>
+    <td>${n + 1}</td>
+    <td class="name"><b>${esc(p.ticker)}</b><a href="https://finance.yahoo.com/quote/${encodeURIComponent(p.ticker)}" target="_blank" rel="noopener">${esc(p.name)}</a><small>${esc(p.industry || p.sector || "")}</small></td>
+    <td class="down">−${p.drop_pct}%</td><td>$${p.price.toFixed(2)}</td><td>${p.pe}</td>
+    <td>${money(p.market_cap)}</td><td>${money(p.cash)}</td><td>${money(p.debt)}</td>
+    <td>${p.profitable_years}/${p.years_checked}</td></tr>`).join("");
+  const tickers = picks.slice(0, 5).map((p) => p.ticker).join(", ");
+  const ask = info ? info.picks_prompt.replace("{TICKERS}", tickers) : "";
+  return `<section>
+    <h2>${esc(info?.title || name)}<span class="count">${picks.length} picks</span></h2>
+    <p class="meta">${esc(info?.why || "")}</p>
+    <div class="table">${picks.length ? `<table>
+      <thead><tr><th>#</th><th>Company</th><th>Down 1 yr</th><th>Price</th><th>P/E</th><th>Value</th><th>Cash</th><th>Debt</th><th>Profit yrs</th></tr></thead>
+      <tbody>${rows}</tbody></table>` : `<p class="empty">Nothing passed every rule this day.</p>`}</div>
+  </section>
+  ${info ? `<div class="cols">
+    <div class="box"><h3>The rules</h3><ol>${info.rules.map((r) => `<li>${esc(r)}</li>`).join("")}</ol>
+      <p class="meta" style="margin:12px 0 0">Sorted by biggest drop. The key question for each pick: is the bad news temporary or permanent?</p></div>
+    ${picks.length ? `<div class="box"><h3>Dig into these picks</h3><p class="prompt" id="ask${i}">${esc(ask)}</p><button data-copy="ask${i}">Copy prompt</button></div>` : ""}
+    <div class="box"><h3>Find your own</h3><p class="meta" style="margin-top:0">Paste into Claude or ChatGPT.</p><p class="prompt" id="find${i}">${esc(info.find_prompt)}</p><button data-copy="find${i}">Copy prompt</button></div>
+  </div>` : ""}`;
+}
+
+async function show(date) {
+  const out = $("#out");
+  try {
+    const d = await getJSON(`results/${date}.json`);
+    out.innerHTML = `<p class="meta" style="margin:0">Picks for <b>${nice(d.date)}</b></p>` +
+      Object.entries(d.screens).map(([n, picks], i) => screenHTML(n, picks, (d.info || {})[n], i)).join("");
+  } catch { out.innerHTML = `<p class="meta">Couldn't load picks for ${esc(date)}.</p>`; }
+}
+
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("button[data-copy]"); if (!b) return;
+  try { await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent); b.textContent = "Copied!"; }
+  catch { b.textContent = "Select and copy"; }
+  setTimeout(() => (b.textContent = "Copy prompt"), 1800);
+});
+
+(async () => {
+  let dates = [];
+  try { dates = await getJSON("results/index.json"); } catch {}
+  if (!dates.length) { $("#out").innerHTML = `<p class="meta">No picks yet.</p>`; return; }
+  $("#day").innerHTML = dates.map((d) => `<option value="${d}">${nice(d)}</option>`).join("");
+  $("#day").onchange = (e) => show(e.target.value);
+  show(dates[0]);
+})();
+</script>
+</body>
+</html>
