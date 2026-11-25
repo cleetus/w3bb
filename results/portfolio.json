@@ -65,6 +65,87 @@
    "price": 12.61,
    "dollars": 10,
    "shares": 0.7930214115781127
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "AMSF",
+   "name": "AMERISAFE, Inc.",
+   "screen": "beaten-down-bargains",
+   "price": 18.57,
+   "dollars": 10,
+   "shares": 0.5385029617662898
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "BABA",
+   "name": "Alibaba Group Holding Limited",
+   "screen": "beaten-down-bargains",
+   "price": 84.86,
+   "dollars": 10,
+   "shares": 0.11784115012962526
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "FINV",
+   "name": "FinVolution Group",
+   "screen": "beaten-down-bargains",
+   "price": 2.48,
+   "dollars": 10,
+   "shares": 4.032258064516129
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "WB",
+   "name": "Weibo Corporation",
+   "screen": "beaten-down-bargains",
+   "price": 5.2,
+   "dollars": 10,
+   "shares": 1.923076923076923
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "MOMO",
+   "name": "Hello Group Inc.",
+   "screen": "beaten-down-bargains",
+   "price": 4.22,
+   "dollars": 10,
+   "shares": 2.3696682464454977
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "VIPS",
+   "name": "Vipshop Holdings Limited",
+   "screen": "beaten-down-bargains",
+   "price": 13.03,
+   "dollars": 10,
+   "shares": 0.7674597083653109
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "LOPE",
+   "name": "Grand Canyon Education, Inc.",
+   "screen": "beaten-down-bargains",
+   "price": 113.54,
+   "dollars": 10,
+   "shares": 0.08807468733485996
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "NTES",
+   "name": "NetEase, Inc.",
+   "screen": "beaten-down-bargains",
+   "price": 100.43,
+   "dollars": 10,
+   "shares": 0.09957184108334162
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "STRL",
+   "name": "Sterling Infrastructure, Inc.",
+   "screen": "beaten-down-bargains",
+   "price": 256.15,
+   "dollars": 10,
+   "shares": 0.0390396252195979
   }
  ],
  "bench_buys": [
@@ -74,6 +155,13 @@
    "price": 722.29,
    "dollars": 70,
    "shares": 0.09691398486682312
+  },
+  {
+   "date": "2026-11-24",
+   "ticker": "SPY",
+   "price": 718.78,
+   "dollars": 90,
+   "shares": 0.12521215995391496
   }
  ],
  "history": [
@@ -82,79 +170,105 @@
    "invested": 70,
    "value": 70.0,
    "bench_value": 70.0
+  },
+  {
+   "date": "2026-11-24",
+   "invested": 160,
+   "value": 160.32,
+   "bench_value": 159.66
   }
  ],
  "holdings": [
   {
-   "ticker": "AMSF",
-   "name": "AMERISAFE, Inc.",
-   "buys": 1,
-   "invested": 10.0,
-   "value": 10.0,
+   "ticker": "VIPS",
+   "name": "Vipshop Holdings Limited",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 20.33,
    "first_bought": "2026-11-23",
-   "price": 18.79,
-   "gain_pct": 0.0
-  },
-  {
-   "ticker": "FINV",
-   "name": "FinVolution Group",
-   "buys": 1,
-   "invested": 10.0,
-   "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 2.5,
-   "gain_pct": 0.0
-  },
-  {
-   "ticker": "BABA",
-   "name": "Alibaba Group Holding Limited",
-   "buys": 1,
-   "invested": 10.0,
-   "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 86.04,
-   "gain_pct": 0.0
-  },
-  {
-   "ticker": "WB",
-   "name": "Weibo Corporation",
-   "buys": 1,
-   "invested": 10.0,
-   "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 5.26,
-   "gain_pct": 0.0
-  },
-  {
-   "ticker": "MOMO",
-   "name": "Hello Group Inc.",
-   "buys": 1,
-   "invested": 10.0,
-   "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 4.16,
-   "gain_pct": -0.0
+   "price": 13.03,
+   "gain_pct": 1.7
   },
   {
    "ticker": "LOPE",
    "name": "Grand Canyon Education, Inc.",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 20.3,
+   "first_bought": "2026-11-23",
+   "price": 113.54,
+   "gain_pct": 1.5
+  },
+  {
+   "ticker": "MOMO",
+   "name": "Hello Group Inc.",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 20.14,
+   "first_bought": "2026-11-23",
+   "price": 4.22,
+   "gain_pct": 0.7
+  },
+  {
+   "ticker": "FINV",
+   "name": "FinVolution Group",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 19.92,
+   "first_bought": "2026-11-23",
+   "price": 2.48,
+   "gain_pct": -0.4
+  },
+  {
+   "ticker": "WB",
+   "name": "Weibo Corporation",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 19.89,
+   "first_bought": "2026-11-23",
+   "price": 5.2,
+   "gain_pct": -0.6
+  },
+  {
+   "ticker": "AMSF",
+   "name": "AMERISAFE, Inc.",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 19.88,
+   "first_bought": "2026-11-23",
+   "price": 18.57,
+   "gain_pct": -0.6
+  },
+  {
+   "ticker": "BABA",
+   "name": "Alibaba Group Holding Limited",
+   "buys": 2,
+   "invested": 20.0,
+   "value": 19.86,
+   "first_bought": "2026-11-23",
+   "price": 84.86,
+   "gain_pct": -0.7
+  },
+  {
+   "ticker": "NTES",
+   "name": "NetEase, Inc.",
    "buys": 1,
    "invested": 10.0,
    "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 110.19,
+   "first_bought": "2026-11-24",
+   "price": 100.43,
    "gain_pct": 0.0
   },
   {
-   "ticker": "VIPS",
-   "name": "Vipshop Holdings Limited",
+   "ticker": "STRL",
+   "name": "Sterling Infrastructure, Inc.",
    "buys": 1,
    "invested": 10.0,
    "value": 10.0,
-   "first_bought": "2026-11-23",
-   "price": 12.61,
+   "first_bought": "2026-11-24",
+   "price": 256.15,
    "gain_pct": -0.0
   }
  ],
- "updated": "2026-11-23"
+ "updated": "2026-11-24"
 }

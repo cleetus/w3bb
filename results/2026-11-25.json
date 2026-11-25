@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-25",
+  "screens": {
+    "beaten-down-bargains": [
+      {
+        "ticker": "AMSF",
+        "name": "AMERISAFE, Inc.",
+        "sector": "Financial Services",
+        "industry": "Insurance - Specialty",
+        "price": 18.57,
+        "price_52w_ago": 37.44,
+        "drop_pct": 50.4,
+        "pe": 8.6,
+        "market_cap": 344158176,
+        "cash": 98365000.0,
+        "debt": 0.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "BABA",
+        "name": "Alibaba Group Holding Limited",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "price": 84.86,
+        "price_52w_ago": 159.27,
+        "drop_pct": 46.7,
+        "pe": 12.6,
+        "market_cap": 211110051840,
+        "cash": 64125269616.75488,
+        "debt": 40105815143.989746,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "FINV",
+        "name": "FinVolution Group",
+        "sector": "Financial Services",
+        "industry": "Credit Services",
+        "price": 2.48,
+        "price_52w_ago": 4.65,
+        "drop_pct": 46.7,
+        "pe": 2.3,
+        "market_cap": 585513152,
+        "cash": 963793410.6430969,
+        "debt": 236319903.61915588,
+        "profitable_years": 9,
+        "years_checked": 10
+      },
+      {
+        "ticker": "WB",
+        "name": "Weibo Corporation",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information",
+        "price": 5.2,
+        "price_52w_ago": 9.27,
+        "drop_pct": 43.9,
+        "pe": 10.8,
+        "market_cap": 1277497344,
+        "cash": 2308965120.0,
+        "debt": 1869380992.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "MOMO",
+        "name": "Hello Group Inc.",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information",
+        "price": 4.22,
+        "price_52w_ago": 6.7,
+        "drop_pct": 37.0,
+        "pe": 4.4,
+        "market_cap": 606142528,
+        "cash": 1274589696.666748,
+        "debt": 10230390.732198954,
+        "profitable_years": 9,
+        "years_checked": 10
+      },
+      {
+        "ticker": "VIPS",
+        "name": "Vipshop Holdings Limited",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "price": 13.03,
+        "price_52w_ago": 18.2,
+        "drop_pct": 28.4,
+        "pe": 4.4,
+        "market_cap": 6045919744,
+        "cash": 4005143706.3530273,
+        "debt": 1146928127.8907776,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "LOPE",
+        "name": "Grand Canyon Education, Inc.",
+        "sector": "Consumer Defensive",
+        "industry": "Education & Training Services",
+        "price": 113.54,
+        "price_52w_ago": 155.24,
+        "drop_pct": 26.9,
+        "pe": 12.1,
+        "market_cap": 2896464128,
+        "cash": 162142000.0,
+        "debt": 114011000.0,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "NTES",
+        "name": "NetEase, Inc.",
+        "sector": "Communication Services",
+        "industry": "Electronic Gaming & Multimedia",
+        "price": 100.43,
+        "price_52w_ago": 135.91,
+        "drop_pct": 26.1,
+        "pe": 13.8,
+        "market_cap": 64301817856,
+        "cash": 27412501114.71045,
+        "debt": 1782625944.40448,
+        "profitable_years": 10,
+        "years_checked": 10
+      },
+      {
+        "ticker": "STRL",
+        "name": "Sterling Infrastructure, Inc.",
+        "sector": "Industrials",
+        "industry": "Engineering & Construction",
+        "price": 256.15,
+        "price_52w_ago": 342.44,
+        "drop_pct": 25.2,
+        "pe": 14.4,
+        "market_cap": 7813224448,
+        "cash": 216936992.0,
+        "debt": 165806000.0,
+        "profitable_years": 9,
+        "years_checked": 10
+      }
+    ]
+  },
+  "info": {
+    "beaten-down-bargains": {
+      "title": "Beaten-down bargains",
+      "why": "Solid, cheap, cash-rich companies that bad news knocked down 25%+ in a year.",
+      "rules": [
+        "P/E between 0 and 15 (real profits, cheap price)",
+        "At least 10 years of SEC filings",
+        "Profitable in at least 8 of the last 10 years, including 2020",
+        "More cash than debt",
+        "Price down at least 25% from 52 weeks ago",
+        "Company worth at least $300.0M"
+      ],
+      "find_prompt": "Act like Warren Buffett looking for bargains. Find 5 US stocks that:\n1. Have a P/E ratio under 15 and real, steady profits\n2. Have been in business at least 10 years and stayed profitable through hard times like 2008 and 2020\n3. Have more cash than debt\n4. Have dropped at least 25% in the past 52 weeks\n\nFor each one, tell me: why the price dropped (the bad news), whether that problem looks temporary or permanent, what the company does that's hard for competitors to copy (its \"moat\"), and the biggest risk of buying it. Use current data and tell me the date of your numbers. Then tell me which one Buffett would most likely buy and why, in plain words a teenager would understand.",
+      "picks_prompt": "Act like Warren Buffett. These stocks passed my screen today (low P/E, 10 years of mostly steady profits, plenty of cash, down 25%+ in a year): {TICKERS}. For each one, look up current news and tell me: why the price dropped, whether that problem looks temporary or permanent, the company's moat, and the biggest risk. Then tell me which one Buffett would most likely buy and why, in plain words a teenager would understand. Tell me the date of your numbers."
+    }
+  }
+}
